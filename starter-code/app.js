@@ -101,13 +101,15 @@ app.locals.title = 'OcDoc App';
 const index = require('./routes/index');
 app.use('/', index);
 const userRoutes= require('./routes/userRoutes');
-app.use('/', userRoutes);
-const locationRoutes = require('./routes/locationRoutes');
-app.use('/', locationRoutes);
+app.use('/api/user', userRoutes);
+const accountRoutes= require('./routes/accountRoutes');
+app.use('/api/user', accountRoutes);
+// const locationRoutes = require('./routes/locationRoutes');
+// app.use('/', locationRoutes);
 const doctorRoutes = require('./routes/doctorRoutes');
-app.use('/', doctorRoutes);
-const commentRoutes = require('./routes/commentRoutes');
-app.use('/', commentRoutes);
+app.use('/api/user', doctorRoutes);
+// const commentRoutes = require('./routes/commentRoutes');
+// app.use('/', commentRoutes);
 
 
 module.exports = app;

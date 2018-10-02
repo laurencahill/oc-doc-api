@@ -1,5 +1,6 @@
 const express        = require("express");
 const userRoutes     = express.Router();
+const passport       = require("passport");
 const User           = require("../models/User");
 const bcrypt         = require("bcrypt");
 const bcryptSalt     = 10;
@@ -7,23 +8,23 @@ const ensureLogin    = require("connect-ensure-login");
 
 //sign up routes
 
-// userRoutes.get("/signup", (req, res, next) => {
-//   res.render("/signup");
-// });
-
 userRoutes.post("/signup", (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const userLocation = req.body.userLocation;
+  const emailAddress = req.body.emailAddress;
 
   if (username === "" || password === "") {
-    res.render("/signup", { message: "Indicate username and password" });
+    res.json({ message: "Indicate username and password." });
     return;
   }
 
   User.findOne({ username })
   .then(user => {
     if (user !== null) {
-      res.render("/signup", { message: "The username already exists" });
+      res.json({ message: "The username already exists." });
       return;
     }
 
@@ -32,40 +33,67 @@ userRoutes.post("/signup", (req, res, next) => {
 
     const newUser = new User({
       username,
-      password: hashPass
+      password: hashPass,
+      firstName,
+      lastName,
+      userLocation,
+      emailAddress,
     });
 
     newUser.save((err) => {
       if (err) {
-        res.render("/signup", { message: "Something went wrong" });
-      } else {
-        res.redirect("/");
+        res.json({ message: "Something went wrong." });
+        return; 
       }
+      res.json(newUser);
     });
   })
   .catch(error => {
-    next(error)
+    res.json(error);
   })
 });
 
-//login routes
+//login & logout routes
 
-userRoutes.get("/login", (req, res, next) => {
-    res.render("/login");
-  });
-  
-userRoutes.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true,
-    passReqToCallback: true
-  }));
+userRoutes.post('/login', (req, res, next) => {
+passport.authenticate('local', (err, theUser, failureDetails) => {
+    if (err) {
+        res.status(500).json({ message: 'Something went wrong authenticating the user.' });
+        return;
+    }
 
+    if (!theUser) {
+        res.status(401).json(failureDetails);
+        return;
+    }
+    // save user in session
+        req.login(theUser, (err) => {
+            if (err) {
+                res.status(500).json({ message: 'Session save did not work.' });
+                return;
+            }
+            res.status(200).json(theUser);
+        });
+    })(req, res, next);
+});
+
+userRoutes.post('/logout', (req, res, next) => {
+    req.logout();
+    res.status(200).json({ message: 'Log out successful!' });
+});
+
+userRoutes.get('/loggedin', (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.status(200).json(req.user);
+        return;
+    }
+    res.status(403).json({ message: 'Unauthorized' });
+});
 
 //generates protected routes with ensure login, keep below all other routes
 
 userRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-    res.render("private", { user: req.user });
+    res.json({ user: req.user });
   });
 
 
