@@ -21,12 +21,11 @@ router.get('/doctors', (req, res, next) => {
 router.post('/doctors/create', (req, res, next)=>{
     Doctor.create({
         docName:      req.body.docName,
-        docLocation:  req.body.docLocation,
         specialties:  req.body.specialties,
         docDetails:   req.body.docDetails,
-        // avgRating: req.body.avgRating,
-        //docImage:   req.file.url,
-        // locations: req.body.locationID,
+        avgRating:    req.body.avgRating,
+        docImage:     req.body.docImage,
+        locationID:   req.body.locationID,
     })
         .then(response => {
         res.json(response);

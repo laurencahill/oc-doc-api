@@ -19,7 +19,7 @@ const MongoStore     = require('connect-mongo')(session);
 
 mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/oc-doc-app', {useNewUrlParser: true})
+  .connect('mongodb://localhost/oc-doc-api', {useNewUrlParser: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -105,11 +105,11 @@ app.use('/api/user', userRoutes);
 const accountRoutes= require('./routes/accountRoutes');
 app.use('/api/user', accountRoutes);
 const locationRoutes = require('./routes/locationRoutes');
-app.use('/api/locations', locationRoutes);
+app.use('/api', locationRoutes);
 const doctorRoutes = require('./routes/doctorRoutes');
-app.use('/api/doctors', doctorRoutes);
-// const commentRoutes = require('./routes/commentRoutes');
-// app.use('/', commentRoutes);
+app.use('/api', doctorRoutes);
+const commentRoutes = require('./routes/commentRoutes');
+app.use('/api', commentRoutes);
 
 
 module.exports = app;

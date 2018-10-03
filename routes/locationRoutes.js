@@ -8,7 +8,7 @@ const Doctor            = require("../models/Doctor");
 // const ensureLogin    = require("connect-ensure-login");
 
 //get list of locations
-router.get('/', (req, res, next) => {
+router.get('/locations', (req, res, next) => {
         Location.find()
         .then((listOfLocations) => {
         res.json({listOfLocations});
@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
     })
 
 //create a new doctor
-router.post('/create', (req, res, next)=>{
+router.post('/locations/create', (req, res, next)=>{
     Location.create({
         locationName:  req.body.locationName,
         address:       req.body.address,
@@ -28,6 +28,7 @@ router.post('/create', (req, res, next)=>{
         zip:           req.body.zip,
         phone:         req.body.phone,
         url:           req.body.url,
+        doctorID:      req.body.doctorID,
     })
         .then(response => {
         res.json(response);
@@ -38,7 +39,7 @@ router.post('/create', (req, res, next)=>{
 });
 
 //edit a location's details
-router.put('/edit/:id', (req, res, next)=>{
+router.put('/locations/edit/:id', (req, res, next)=>{
     Location.findByIdAndUpdate(req.params.id, req.body)
         .then(() => {
         res.json({message: `Location has been updated successfully.`});
@@ -49,7 +50,7 @@ router.put('/edit/:id', (req, res, next)=>{
 })
 
 //show a location's details
-router.get('/:id', (req, res, next)=>{
+router.get('/locations/:id', (req, res, next)=>{
     Location.findById(req.params.id)
         .then(response => {
         res.json(response);
@@ -59,7 +60,7 @@ router.get('/:id', (req, res, next)=>{
         })
 })
 
-router.delete('/delete/:id', (req, res, next)=>{
+router.delete('/locations/delete/:id', (req, res, next)=>{
     Location.findByIdAndRemove(req.params.id)
         .then(() => {
         res.json({message: `Location has been removed successfully.`});
