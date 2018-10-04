@@ -82,6 +82,13 @@ userRoutes.post('/logout', (req, res, next) => {
     res.status(200).json({ message: 'Log out successful!' });
 });
 
+
+//generates protected routes with ensure login, keep below all other routes
+
+userRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
+    res.json({ user: req.user });
+});
+
 userRoutes.get('/loggedin', (req, res, next) => {
     if (req.isAuthenticated()) {
         res.status(200).json(req.user);
@@ -89,12 +96,5 @@ userRoutes.get('/loggedin', (req, res, next) => {
     }
     res.status(403).json({ message: 'Unauthorized' });
 });
-
-//generates protected routes with ensure login, keep below all other routes
-
-userRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-    res.json({ user: req.user });
-  });
-
 
 module.exports = userRoutes;
