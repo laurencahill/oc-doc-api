@@ -23,9 +23,9 @@ router.post('/doctors/create', (req, res, next)=>{
         docName:      req.body.docName,
         specialties:  req.body.specialties,
         docDetails:   req.body.docDetails,
-        avgRating:    req.body.avgRating,
-        docImage:     req.body.docImage,
-        locationID:   req.body.locationID,
+        // avgRating:    req.body.avgRating,
+        // docImage:     req.body.docImage,
+        // locationID:   req.body.locationID,
     })
         .then(response => {
         res.json(response);
@@ -48,7 +48,7 @@ router.put('/doctors/edit/:id', (req, res, next)=>{
 
 //show a doctor's details
 router.get('/doctors/:id', (req, res, next)=>{
-    Doctor.findById(req.params.id)
+    Doctor.findById(req.params.id).populate('comments')
         .then(response => {
         res.json(response);
         })

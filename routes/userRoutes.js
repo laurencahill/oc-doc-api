@@ -1,8 +1,8 @@
 const express        = require("express");
 const userRoutes     = express.Router();
 const passport       = require("passport");
-const User           = require("../models/User");
 const bcrypt         = require("bcrypt");
+const User           = require("../models/User");
 const bcryptSalt     = 10;
 const ensureLogin    = require("connect-ensure-login");
 
@@ -11,10 +11,10 @@ const ensureLogin    = require("connect-ensure-login");
 userRoutes.post("/signup", (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
+  const emailAddress = req.body.emailAddress;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const userLocation = req.body.userLocation;
-  const emailAddress = req.body.emailAddress;
 
   if (username === "" || password === "") {
     res.json({ message: "Indicate username and password." });
@@ -34,10 +34,10 @@ userRoutes.post("/signup", (req, res, next) => {
     const newUser = new User({
       username,
       password: hashPass,
+      emailAddress,
       firstName,
       lastName,
       userLocation,
-      emailAddress,
     });
 
     newUser.save((err) => {
