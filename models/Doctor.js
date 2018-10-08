@@ -6,7 +6,7 @@ const doctorSchema = new Schema({
   docImage:     { type: String, default: "./images/placeholder.jpg" },
   specialties:  [String],
   docDetails:   String,
-  avgRating:    { type: Number, default: 0 },
+  avgRating:    Number,
   locationID:   { type: Schema.Types.ObjectId, ref: "Location" },
   docComments:  [ {type: Schema.Types.ObjectId, ref: "Comment", default: []} ],
   status:       {type: Boolean, default: false},

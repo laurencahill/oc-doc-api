@@ -10,19 +10,30 @@ const Doctor            = require("../models/Doctor");
 
 //create a new comment
 router.post('/doctors/:id', (req, res, next)=>{
+
     Comment.create({
-        author:        req.body.author,
-        uploadDate:    req.body.uploadDate,
+        author:        req.user._id,
         visitDate:     req.body.visitDate,
         rating:        req.body.rating,
         visitReason:   req.body.visitReason,
         comment:       req.body.comment,
-        doctorID:      req.body.doctorID,
+        doctorID:      req.params.id,
+        uploadDate:    req.body.uploadDate,
     })
         .then(comment => {
-        res.json(comment)
-        Doctor.findByIdAndUpdate(req.params.id, { $push: {docComments: comment._id} } )
-            .then((response)=>{
+        Doctor.findByIdAndUpdate(req.params.id, {$push: {docComments: comment._id}}).populate("docComments")
+            .then((theDoctor)=>{
+                const theAverage = theDoctor.docComments.reduce((a,b) => {
+                return a + b.rating
+                }, 0) / theDoctor.docComments.length;
+                theDoctor.avgRating = theAverage
+                theDoctor.save()
+                .then((theAverage)=> {
+                    res.json(theAverage);
+                })
+                .catch((err)=>{
+                    res.json(err);
+                })
             })
             .catch((err)=>{
             res.json(err)
@@ -44,7 +55,7 @@ router.delete('/doctors/:id', (req, res, next) => {
                 .then((doctorInfo) => {
                   doctorInfo.docComments =  doctorInfo.docComments.filter((eachId) => !eachId.equals(theCommentID))
                   doctorInfo.save()
-                    .then((respnse)=>{
+                    .then((response)=>{
                     })
                     .catch((err)=>{
                     res.json(err);

@@ -3,8 +3,8 @@ const Schema   = mongoose.Schema;
 
 const commentSchema = new Schema({
   author:      { type:Schema.Types.ObjectId, ref: "User" },
-  uploadDate:  { type: Date, default: Date.now },
-  visitDate:   Date,
+  uploadDate:  {type: String, default: new Date().toLocaleDateString()},
+  visitDate:   {type: String, default: new Date().toLocaleDateString()},
   rating:      { type: Number, min: 0, max: 5, required: true },
   visitReason: String,
   comment:     String,

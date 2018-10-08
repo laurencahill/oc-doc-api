@@ -46,10 +46,24 @@ router.put('/doctors/edit/:id', (req, res, next)=>{
         })
 })
 
+
+//edit a doctor's details
+router.get('/doctors/edit/:id', (req, res, next)=>{
+    Doctor.findById(req.params.id, req.body)
+        .then(response => {
+        console.log(response);
+        res.json(response);
+        })
+        .catch(err => {
+        res.json(err);
+        })
+})
+
 //show a doctor's details
 router.get('/doctors/:id', (req, res, next)=>{
-    Doctor.findById(req.params.id).populate('comments')
+    Doctor.findById(req.params.id).populate('docComments')
         .then(response => {
+        console.log(response);
         res.json(response);
         })
         .catch(err => {
