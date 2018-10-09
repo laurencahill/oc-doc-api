@@ -9,6 +9,7 @@ const ensureLogin    = require("connect-ensure-login");
 //sign up routes
 
 userRoutes.post("/signup", (req, res, next) => {
+    console.log("AAAAAHHHHHIIIIIM ATTEMPTING TO SIGN UPPPPP")
   const username = req.body.username;
   const password = req.body.password;
   const emailAddress = req.body.emailAddress;
