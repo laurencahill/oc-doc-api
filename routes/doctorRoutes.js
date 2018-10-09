@@ -1,10 +1,7 @@
 const express        = require("express");
 const router         = express.Router();
-// const passport       = require("passport");
 const Doctor         = require("../models/Doctor");
-// const bcrypt         = require("bcrypt");
-// const bcryptSalt     = 10;
-// const ensureLogin    = require("connect-ensure-login");
+
 
 //get list of doctors
 router.get('/doctors', (req, res, next) => {

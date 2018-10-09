@@ -1,11 +1,7 @@
 const express           = require("express");
 const router            = express.Router();
-// const passport       = require("passport");
 const Location          = require("../models/Location");
 const Doctor            = require("../models/Doctor");
-// const bcrypt         = require("bcrypt");
-// const bcryptSalt     = 10;
-// const ensureLogin    = require("connect-ensure-login");
 
 //get list of locations
 router.get('/locations', (req, res, next) => {

@@ -1,12 +1,7 @@
 const express           = require("express");
 const router            = express.Router();
-// const passport       = require("passport");
 const Comment           = require("../models/Comment");
 const Doctor            = require("../models/Doctor");
-// const bcrypt         = require("bcrypt");
-// const bcryptSalt     = 10;
-// const ensureLogin    = require("connect-ensure-login");
-
 
 //create a new comment
 router.post('/doctors/:id', (req, res, next)=>{
