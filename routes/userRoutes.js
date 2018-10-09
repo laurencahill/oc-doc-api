@@ -85,17 +85,18 @@ userRoutes.post('/logout', (req, res, next) => {
 
 
 //generates protected routes with ensure login, keep below all other routes
-
-userRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-    res.json({ user: req.user });
-});
-
 userRoutes.get('/loggedin', (req, res, next) => {
-    if (req.isAuthenticated()) {
+    console.log("*&*&*&*&*&*&*&*^&^^$%^$#@!$%^&*&$^%$%@#^$&%& RREEEEEQQQQQ UUUSSSEEERRRR", req.user)
+    if (req.user) {
         res.status(200).json(req.user);
         return;
     }
     res.status(403).json({ message: 'Unauthorized' });
 });
+
+userRoutes.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
+    res.json({ user: req.user });
+});
+
 
 module.exports = userRoutes;
