@@ -7,8 +7,9 @@ const bcrypt     = require('bcryptjs');
 const bcryptSalt = 10;
 
 //show the user's account page
-router.get('/account', (req, res, next)=>{
-    User.findById(req.user._id)
+router.get('/account/:id', (req, res, next)=>{
+    console.log("the user info when going to account page ------------- ", req.user);
+    User.findById(req.params.id)
     .then((userInfo) => {
         res.json({ theUser: userInfo })
     })
@@ -17,29 +18,16 @@ router.get('/account', (req, res, next)=>{
     })
 })
 
-//edit the user account info
-
-// router.get("/edit", (req, res, next) => {
-//     if (!req.user) {
-//         res.status(400).json({ message: 'Specified id is not valid' });
-//         return;
-//     }
-//     User.findById(req.user._id)
-//     .then((userInfo) => {
-//         res.json({ theUser: userInfo })
-//     })
-//     .catch((err) => {
-//         next(err);
-//     })
-// })
-
-router.post("/edit", uploadCloud.single('photo'), (req, res, next) => {
+router.post("/edit/:id", uploadCloud.single('photo'), (req, res, next) => {
    
-const userID= req.user._id
+const userID= req.params.id
+console.log(".......................sending user information for update", userID)
     User.findByIdAndUpdate(userID, {
+        userImage:      req.file.url,
+        username:       req.body.username,
+        emailAddress:   req.body.emailAddress,
         firstName:      req.body.firstName,
         lastName:       req.body.lastName,
-        // userImage:      req.file.url,
         userLocation:   req.body.userLocation,
     })
     .then(() => {
@@ -51,7 +39,8 @@ const userID= req.user._id
 })
 
 //delete the user account
-router.delete("/delete/:id", (req, res, next) => {  
+router.delete("/delete/:id", (req, res, next) => { 
+    console.log("---------------deleting the user information", req.params.id) 
     if (!req.user) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
