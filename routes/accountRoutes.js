@@ -23,7 +23,7 @@ router.post("/edit/:id", uploadCloud.single('photo'), (req, res, next) => {
 const userID= req.params.id
 console.log(".......................sending user information for update", userID)
     User.findByIdAndUpdate(userID, {
-        userImage:      req.file.url,
+        // userImage:      req.file.url,
         username:       req.body.username,
         emailAddress:   req.body.emailAddress,
         firstName:      req.body.firstName,
@@ -40,13 +40,9 @@ console.log(".......................sending user information for update", userID
 
 //delete the user account
 router.delete("/delete/:id", (req, res, next) => { 
-    console.log("---------------deleting the user information", req.params.id) 
-    if (!req.user) {
-        res.status(400).json({ message: 'Specified id is not valid' });
-        return;
-    }
     User.findByIdAndRemove(req.params.id)
     .then(() => {
+        console.log("user has been removed successfully", req.params.id)
         res.json({message: `User has been removed successfully.`});
     })
     .catch((err) => {
