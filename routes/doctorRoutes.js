@@ -58,7 +58,14 @@ router.get('/doctors/edit/:id', (req, res, next)=>{
 
 //show a doctor's details
 router.get('/doctors/:id', (req, res, next)=>{
-    Doctor.findById(req.params.id).populate('docComments')
+    Doctor.findById(req.params.id).populate({
+        path: 'docComments',
+        populate: {
+            path: 'author',
+            model: 'User',
+        }}
+    
+    )
         .then(response => {
         console.log(response);
         res.json(response);

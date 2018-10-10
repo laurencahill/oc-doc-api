@@ -18,12 +18,12 @@ router.get('/account/:id', (req, res, next)=>{
     })
 })
 
-router.post("/edit/:id", uploadCloud.single('photo'), (req, res, next) => {
+router.post("/edit/:id", uploadCloud.single('userImage'), (req, res, next) => {
    
-const userID= req.params.id
-console.log(".......................sending user information for update", userID)
+const userID= req.user.id
+console.log(".......................sending user information for update", req.body, req.file)
     User.findByIdAndUpdate(userID, {
-        // userImage:      req.file.url,
+        userImage:      req.file.url,
         username:       req.body.username,
         emailAddress:   req.body.emailAddress,
         firstName:      req.body.firstName,
