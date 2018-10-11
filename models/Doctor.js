@@ -3,7 +3,7 @@ const Schema   = mongoose.Schema;
 
 const doctorSchema = new Schema({
   docName:      String,
-  docImage:     { type: String, default: "./images/placeholder.jpg" },
+  docImage:     String,
   specialties:  [String],
   docDetails:   String,
   avgRating:    Number,

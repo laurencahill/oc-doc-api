@@ -1,7 +1,8 @@
 const express        = require("express");
 const router         = express.Router();
 const Doctor         = require("../models/Doctor");
-
+const uploadCloud    = require('../config/cloudinary.js');
+const multer         = require('multer');
 
 //get list of doctors
 router.get('/doctors', (req, res, next) => {
@@ -15,14 +16,12 @@ router.get('/doctors', (req, res, next) => {
     })
 
 //create a new doctor
-router.post('/doctors/create', (req, res, next)=>{
+router.post('/doctors/create', uploadCloud.single('docImage'), (req, res, next)=>{
     Doctor.create({
+        docImage:     req.file.url,
         docName:      req.body.docName,
         specialties:  req.body.specialties,
         docDetails:   req.body.docDetails,
-        // avgRating:    req.body.avgRating,
-        // docImage:     req.body.docImage,
-        // locationID:   req.body.locationID,
     })
         .then(response => {
         res.json(response);
@@ -33,7 +32,7 @@ router.post('/doctors/create', (req, res, next)=>{
 });
 
 //edit a doctor's details
-router.put('/doctors/edit/:id', (req, res, next)=>{
+router.put('/doctors/edit/:id', uploadCloud.single('docImage'), (req, res, next)=>{
     Doctor.findByIdAndUpdate(req.params.id, req.body)
         .then(() => {
         res.json({message: `Doctor has been updated successfully.`});

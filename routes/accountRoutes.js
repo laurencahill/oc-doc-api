@@ -8,7 +8,6 @@ const bcryptSalt = 10;
 
 //show the user's account page
 router.get('/account/:id', (req, res, next)=>{
-    console.log("the user info when going to account page ------------- ", req.user);
     User.findById(req.params.id)
     .then((userInfo) => {
         res.json({ theUser: userInfo })
@@ -21,7 +20,6 @@ router.get('/account/:id', (req, res, next)=>{
 router.post("/edit/:id", uploadCloud.single('userImage'), (req, res, next) => {
    
 const userID= req.user.id
-console.log(".......................sending user information for update", req.body, req.file)
     User.findByIdAndUpdate(userID, {
         userImage:      req.file.url,
         username:       req.body.username,
