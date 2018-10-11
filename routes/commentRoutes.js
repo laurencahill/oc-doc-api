@@ -17,23 +17,28 @@ router.post('/doctors/:id', (req, res, next)=>{
     })
         .then(comment => {
         Doctor.findByIdAndUpdate(req.params.id, {$push: {docComments: comment._id}}).populate("docComments")
+            
             .then((theDoctor)=>{
                 const theAverage = theDoctor.docComments.reduce((a,b) => {
                 return a + b.rating
                 }, 0) / theDoctor.docComments.length;
                 theDoctor.avgRating = theAverage
                 theDoctor.save()
+                
                 .then((theAverage)=> {
                     res.json(theAverage);
                 })
+                
                 .catch((err)=>{
                     res.json(err);
                 })
             })
+
             .catch((err)=>{
             res.json(err)
             })
             })
+
         .catch(err => {
         res.json(err);
         })

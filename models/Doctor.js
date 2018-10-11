@@ -7,7 +7,6 @@ const doctorSchema = new Schema({
   specialties:  [String],
   docDetails:   String,
   avgRating:    Number,
-  locationID:   { type: Schema.Types.ObjectId, ref: "Location" },
   docComments:  [ {type: Schema.Types.ObjectId, ref: "Comment", default: []} ],
   docCity:      String,
   docState:     String,
