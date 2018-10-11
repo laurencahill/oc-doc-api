@@ -110,8 +110,6 @@ const userRoutes= require('./routes/userRoutes');
 app.use('/api', userRoutes);
 const accountRoutes= require('./routes/accountRoutes');
 app.use('/api', accountRoutes);
-const locationRoutes = require('./routes/locationRoutes');
-app.use('/api', locationRoutes);
 const doctorRoutes = require('./routes/doctorRoutes');
 app.use('/api', doctorRoutes);
 const commentRoutes = require('./routes/commentRoutes');

@@ -9,6 +9,8 @@ const doctorSchema = new Schema({
   avgRating:    Number,
   locationID:   { type: Schema.Types.ObjectId, ref: "Location" },
   docComments:  [ {type: Schema.Types.ObjectId, ref: "Comment", default: []} ],
+  docCity:      String,
+  docState:     String,
   status:       {type: Boolean, default: false},
 });
 

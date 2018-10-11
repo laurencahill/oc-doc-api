@@ -17,11 +17,14 @@ router.get('/doctors', (req, res, next) => {
 
 //create a new doctor
 router.post('/doctors/create', uploadCloud.single('docImage'), (req, res, next)=>{
+    console.log("----------------------------", req.body, req.file)
     Doctor.create({
         docImage:     req.file.url,
         docName:      req.body.docName,
         specialties:  req.body.specialties,
         docDetails:   req.body.docDetails,
+        docCity:      req.body.docCity,
+        docState:     req.body.docState,
     })
         .then(response => {
         res.json(response);
