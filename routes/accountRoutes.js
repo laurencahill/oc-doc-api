@@ -18,8 +18,7 @@ router.get('/account/:id', (req, res, next)=>{
 })
 
 router.post("/edit/:id", uploadCloud.single('userImage'), (req, res, next) => {
-   
-const userID= req.user.id
+    const userID= req.user.id
     User.findByIdAndUpdate(userID, {
         userImage:      req.file.url,
         username:       req.body.username,
